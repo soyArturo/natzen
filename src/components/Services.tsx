@@ -1,12 +1,9 @@
 "use client";
 
 import clsx from "clsx";
-import { useId } from "react";
 
 import { Container } from "@/components/Container";
-import { FaTools } from "react-icons/fa";
-import { FaFileContract, FaSolarPanel, FaTowerCell } from "react-icons/fa6";
-import { MdArchitecture } from "react-icons/md";
+import { FaFileContract, FaSolarPanel } from "react-icons/fa6";
 
 const features = [
   {
@@ -19,7 +16,6 @@ const features = [
       },
     ],
     icon: function ReportingIcon() {
-      let id = useId();
       return (
         <img
           width="128"

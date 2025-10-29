@@ -1,40 +1,10 @@
 "use client";
-
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import clsx from "clsx";
 import type { EmblaOptionsType } from "embla-carousel";
 import { useEffect, useState } from "react";
 
 import backgroundImage from "@/assets/images/background-aboutus2.jpeg";
-import screenshotExpenses from "@/assets/images/screenshots/expenses.png";
-import screenshotPayroll from "@/assets/images/screenshots/payroll.png";
-import screenshotReporting from "@/assets/images/screenshots/reporting.png";
-import screenshotVatReturns from "@/assets/images/screenshots/vat-returns.png";
 import { Container } from "@/components/Container";
 import EmblaCarousel from "./EmblaCarousel";
-
-const features = [
-  {
-    title: "Proyecto 1",
-    description: "Descripción del proyecto 1 realizado por Grupo Natzen.",
-    image: screenshotPayroll,
-  },
-  {
-    title: "Proyecto 2",
-    description: "Descripción del proyecto 2 realizado por Grupo Natzen.",
-    image: screenshotExpenses,
-  },
-  {
-    title: "Proyecto 3",
-    description: "Descripción del proyecto 3 realizado por Grupo Natzen.",
-    image: screenshotVatReturns,
-  },
-  {
-    title: "Proyecto 4",
-    description: "Descripción del proyecto 4 realizado por Grupo Natzen.",
-    image: screenshotReporting,
-  },
-];
 
 export function PrimaryFeatures() {
   let [tabOrientation, setTabOrientation] = useState<"horizontal" | "vertical">(

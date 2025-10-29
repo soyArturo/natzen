@@ -5,7 +5,6 @@ import {
   PopoverButton,
   PopoverPanel,
 } from "@headlessui/react";
-import clsx from "clsx";
 import { FaTimes } from "react-icons/fa";
 import { FaBars } from "react-icons/fa6";
 import { Link } from "react-router-dom";
