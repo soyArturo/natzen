@@ -14,8 +14,8 @@ export const NavLink = ({
     <Link
       to={href}
       className={clsx(
-        "inline-block rounded-lg px-2 py-1 text-sm hover:bg-primary-darker",
-        type === "top" ? "text-white" : "text-black hover:text-white"
+        "inline-block rounded-lg px-2 py-1 text-sm cursor-pointer ",
+        type === "top" ? "text-white hover:bg-primary-darker" : "text-black "
       )}
     >
       {children}

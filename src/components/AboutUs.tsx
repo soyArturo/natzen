@@ -3,7 +3,6 @@
 import clsx from "clsx";
 import { useId } from "react";
 
-import backgroundImage from "@/assets/images/background-aboutus2.jpeg";
 import { Container } from "@/components/Container";
 import { FaAtom, FaRegLightbulb } from "react-icons/fa6";
 import { TbTargetArrow } from "react-icons/tb";
@@ -19,7 +18,7 @@ const features = [
       },
     ],
     icon: function ReportingIcon() {
-      let id = useId();
+      const id = useId();
       return (
         <TbTargetArrow id={id} className="text size-28 text-primary-darker" />
       );
@@ -111,7 +110,10 @@ function FeaturesDesktop() {
                 ...feature,
                 name: (
                   <div className="">
-                    <span className="absolute inset-0" />
+                    <span
+                      className="absolute inset-0"
+                      aria-label={feature.name}
+                    />
                     {feature.name}
                   </div>
                 ),
@@ -142,16 +144,11 @@ export function AboutUs() {
     <section
       id="aboutus"
       aria-label="Features for running your books"
-      className="relative overflow-hidden pt-20 pb-28 sm:py-32"
+      className="relative overflow-hidden pt-20 pb-28 sm:py-32 gradient-background"
     >
-      <img
-        className="absolute top-1/2 left-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"
-        src={backgroundImage}
-        alt=""
-      />
       <Container className="relative">
         <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
-          <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
             ¿Quienes somos?
           </h2>
           <p className="mt-4 text-lg tracking-tight text-white">

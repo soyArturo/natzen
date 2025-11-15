@@ -1,4 +1,4 @@
-import Logo from "@/assets/images/logos/logo_white.png";
+import Logo from "@/assets/images/logos/logo_white.webp";
 import {
   Popover,
   PopoverBackdrop,

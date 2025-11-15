@@ -1,7 +1,72 @@
+import axiosInstance from "@/config/axios";
+import { AnimatePresence, motion } from "motion/react";
+import { useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useForm } from "react-hook-form";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaBuilding, FaEnvelope } from "react-icons/fa6";
+import Loading from "./Loading";
+
+const SITE_KEY = "6Lf-xgssAAAAAPLREMGGH2l_mAS7mTdulj-JZkZC";
+
+type ContactFormValues = {
+  nombre: string;
+  correo: string;
+  telefono: string;
+  motivo: string;
+};
 
 export function ContactUs() {
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const form = useRef<HTMLFormElement>(null);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormValues>();
+
+  const onSubmit = async (data: ContactFormValues) => {
+    if (!captchaValue) {
+      setCaptchaError("Por favor completa el captcha antes de enviar.");
+      return;
+    }
+    setCaptchaError("");
+    setIsSending(true);
+    setTimeout(() => {
+      setShowLoader(true);
+    }, 400);
+    console.log("Datos enviados:", data);
+    console.log("Captcha:", captchaValue);
+
+    try {
+      await axiosInstance.post("enviar-correo/", {
+        nombre: data.nombre,
+        correo: data.correo,
+        telefono: data.telefono,
+        motivo: data.motivo,
+        captcha_token: captchaValue,
+      });
+    } catch (error) {
+      console.error(error);
+      alert("Ocurrió un error enviando el formulario.");
+    } finally {
+      setShowLoader(false);
+      setIsSending(false);
+      setSuccessMessage("Tu mensaje ha sido enviado correctamente.");
+      setTimeout(() => setSuccessMessage(""), 5000);
+      reset();
+      recaptchaRef.current?.reset();
+      setCaptchaValue(null);
+    }
+  };
+
   return (
     <section
       id="contact"
@@ -12,7 +77,7 @@ export function ContactUs() {
         <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
           <div className="relative px-6 pt-24 pb-20 sm:pt-32 lg:static lg:px-8">
             <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
-              <div className="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden bg-primary ring-1 ring-gray-900/10 md:rounded-r-2xl lg:w-1/2">
+              <div className="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden gradient-background ring-1 ring-gray-900/10 md:rounded-r-2xl lg:w-1/2">
                 <div
                   aria-hidden="true"
                   className="absolute top-[calc(100%-13rem)] -left-56 hidden transform-gpu blur-3xl lg:top-[calc(50%-7rem)] lg:left-[max(-14rem,calc(100%-59rem))]"
@@ -26,7 +91,7 @@ export function ContactUs() {
                   />
                 </div>
               </div>
-              <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
+              <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Contacto
               </h2>
 
@@ -72,6 +137,7 @@ export function ContactUs() {
                   marginTop: "20px",
                   borderRadius: "8px",
                 }}
+                title="Ubicación Natzen"
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -79,110 +145,148 @@ export function ContactUs() {
               ></iframe>
             </div>
           </div>
-          <form
-            action="#"
-            method="POST"
-            className="px-6 pt-20 pb-24 sm:pb-32 lg:px-8 lg:py-48"
-          >
-            <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
-              <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="first-name"
-                    className="block text-sm/6 font-semibold text-gray-900"
-                  >
-                    Nombre
-                  </label>
-                  <div className="mt-2.5">
+
+          <AnimatePresence mode="wait">
+            {!isSending && (
+              <motion.form
+                ref={form}
+                onSubmit={handleSubmit(onSubmit)}
+                className="px-6 pt-20 pb-24 sm:pb-32 lg:px-8 lg:py-48"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: isSending ? 0 : 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                  {successMessage && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                      className="mb-6 sm:col-span-2"
+                    >
+                      <div className="rounded-md bg-green-50 p-4 border border-green-200 text-green-800 shadow">
+                        <p className="text-sm font-medium">{successMessage}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                  {/* Nombre */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-900">
+                      Nombre*
+                    </label>
                     <input
-                      id="first-name"
-                      name="first-name"
-                      type="text"
-                      autoComplete="given-name"
-                      className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                      {...register("nombre", { required: "Nombre requerido" })}
+                      className="block w-full rounded-md bg-white px-3.5 py-2  outline-1 outline-gray-300"
                     />
+                    {errors.nombre && (
+                      <p className="text-red-500 text-sm">
+                        {errors.nombre.message}
+                      </p>
+                    )}
                   </div>
-                </div>
-                <div>
-                  <label
-                    htmlFor="last-name"
-                    className="block text-sm/6 font-semibold text-gray-900"
-                  >
-                    Apellido
-                  </label>
-                  <div className="mt-2.5">
+
+                  {/* Correo */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-900">
+                      Correo electrónico*
+                    </label>
                     <input
-                      id="last-name"
-                      name="last-name"
-                      type="text"
-                      autoComplete="family-name"
-                      className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                    />
-                  </div>
-                </div>
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="email"
-                    className="block text-sm/6 font-semibold text-gray-900"
-                  >
-                    Correo electrónico
-                  </label>
-                  <div className="mt-2.5">
-                    <input
-                      id="email"
-                      name="email"
+                      {...register("correo", {
+                        required: "Correo requerido",
+                        pattern: {
+                          value: /\S+@\S+\.\S+/,
+                          message: "Correo inválido",
+                        },
+                      })}
                       type="email"
-                      autoComplete="email"
-                      className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                      className="block w-full rounded-md px-3.5 py-2 outline-1 outline-gray-300"
                     />
+                    {errors.correo && (
+                      <p className="text-red-500 text-sm">
+                        {errors.correo.message}
+                      </p>
+                    )}
                   </div>
-                </div>
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="phone-number"
-                    className="block text-sm/6 font-semibold text-gray-900"
-                  >
-                    Numero de teléfono
-                  </label>
-                  <div className="mt-2.5">
+
+                  {/* Teléfono */}
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-900">
+                      Número de teléfono*
+                    </label>
                     <input
-                      id="phone-number"
-                      name="phone-number"
+                      {...register("telefono", {
+                        required: "Teléfono requerido",
+                      })}
                       type="tel"
-                      autoComplete="tel"
-                      className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                      className="block w-full rounded-md px-3.5 py-2  outline-1 outline-gray-300"
                     />
+                    {errors.telefono && (
+                      <p className="text-red-500 text-sm">
+                        {errors.telefono.message}
+                      </p>
+                    )}
                   </div>
-                </div>
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="message"
-                    className="block text-sm/6 font-semibold text-gray-900"
-                  >
-                    Motivo
-                  </label>
-                  <div className="mt-2.5">
+
+                  {/* Motivo */}
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-900">
+                      Motivo*
+                    </label>
                     <textarea
-                      id="message"
-                      name="message"
+                      {...register("motivo", { required: "Motivo requerido" })}
                       rows={4}
-                      className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                      defaultValue={""}
+                      className="block w-full rounded-md px-3.5 py-2  outline-1 outline-gray-300"
                     />
+                    {errors.motivo && (
+                      <p className="text-red-500 text-sm">
+                        {errors.motivo.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* RECAPTCHA */}
+                  <div className="sm:col-span-2">
+                    <ReCAPTCHA
+                      ref={recaptchaRef}
+                      sitekey={SITE_KEY}
+                      onChange={(v) => {
+                        setCaptchaValue(v);
+                        setCaptchaError(""); // limpiar error en cuanto se seleccione
+                      }}
+                    />
+
+                    {captchaError && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {captchaError}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="sm:col-span-2 mt-6 flex justify-end">
+                    <button
+                      type="submit"
+                      className="rounded-md bg-primary px-4 py-2 text-white font-semibold shadow hover:bg-primary-darker"
+                    >
+                      Enviar
+                    </button>
                   </div>
                 </div>
-              </div>
-              <div className="mt-8 flex justify-end">
-                <button
-                  type="submit"
-                  disabled
-                  className="rounded-md bg-primary px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-primary-darker focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Enviar
-                </button>
-              </div>
-            </div>
-          </form>
+              </motion.form>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {showLoader && (
+              <motion.div
+                className="flex justify-center items-center py-48"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                <Loading />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>

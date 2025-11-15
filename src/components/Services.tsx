@@ -156,7 +156,10 @@ function FeaturesDesktop() {
                 ...feature,
                 name: (
                   <div className="flex justify-center">
-                    <span className="absolute inset-0" />
+                    <span
+                      className="absolute inset-0"
+                      aria-label={feature.name}
+                    />
                     {feature.name}
                   </div>
                 ),
@@ -189,7 +192,7 @@ export function Services() {
     >
       <Container>
         <div className="mx-auto max-w-2xl md:text-center">
-          <h2 className="font-display text-3xl tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="font-display font-bold text-3xl tracking-tight text-slate-900 sm:text-4xl">
             Servicios
           </h2>
         </div>

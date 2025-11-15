@@ -1,17 +1,16 @@
-import Logo from "@/assets/images/logos/logo.png";
+import Logo from "@/assets/images/logos/logo.webp";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { Container } from "./Container";
 import { NavLink } from "./NavLink";
 
 const navigation = [
-  { name: "Nosotros", href: "#aboutus" },
-  { name: "Servicios", href: "#services" },
-  { name: "Proyectos", href: "#proyects" },
-  { name: "Clientes", href: "#clients" },
-  { name: "Presencia", href: "#presence" },
-  { name: "Contacto", href: "#contact" },
+  { name: "Nosotros", href: "aboutus" },
+  { name: "Servicios", href: "services" },
+  { name: "Proyectos", href: "proyects" },
+  { name: "Clientes", href: "clients" },
+  { name: "Presencia", href: "presence" },
+  { name: "Contacto", href: "contact" },
 ];
 
 export const Footer = () => {
@@ -35,9 +34,6 @@ export const Footer = () => {
         </div>
         <div className="flex flex-col items-center border-t border-slate-400/10 py-10 sm:flex-row-reverse sm:justify-between">
           <div className="flex gap-x-6">
-            <Link to="#" className="group" aria-label="TaxPal on X">
-              <FaXTwitter className="h-6 w-6 fill-slate-700 group-hover:fill-primary" />
-            </Link>
             <Link
               to="https://www.facebook.com/natzen.energia/"
               target="_blank"
@@ -46,12 +42,17 @@ export const Footer = () => {
             >
               <FaFacebook className="h-6 w-6 fill-slate-700 group-hover:fill-primary" />
             </Link>
-            <Link to="#" className="group" aria-label="TaxPal on GitHub">
+            <Link
+              to="https://www.instagram.com/natzen.energia"
+              target="_blank"
+              className="group"
+              aria-label="Natzen on Instagram"
+            >
               <FaInstagram className="h-6 w-6 fill-slate-700 group-hover:fill-primary" />
             </Link>
           </div>
           <p className="mt-6 text-sm text-black sm:mt-0">
-            &copy; {new Date().getFullYear()} Grupo Natzen. Todos los
+            &copy; {new Date().getFullYear()} Grupo Natzen. Todos los derechos
             reservados.
           </p>
         </div>

@@ -43,11 +43,30 @@
     --container-2xl: 40rem;
 }
 
+.gradient-background {
+    background: linear-gradient(300deg, #069a4a, #047b3b, #1ea45c);
+    background-size: 180% 180%;
+    animation: gradient-animation 18s ease infinite;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .embla {
-    max-width: 56rem;
     margin: auto;
     margin-top: 40px;
-    --slide-height: 24rem;
+    --slide-height: 28rem;
     --slide-spacing: 1rem;
     --slide-size: 80%;
 }
