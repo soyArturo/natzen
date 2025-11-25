@@ -32,7 +32,7 @@ export const Hero = () => {
               transition={{ duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
               className="font-display text-wrap text-5xl font-bold tracking-tight text-white sm:text-7xl"
             >
-              Soluciones eficientes para tus proyectos de ingeniería
+              Soluciones eficientes para proyectos eléctricos
             </motion.h1>
           </div>
         </div>

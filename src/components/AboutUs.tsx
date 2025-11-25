@@ -6,6 +6,7 @@ import { useId } from "react";
 import { Container } from "@/components/Container";
 import { FaAtom, FaRegLightbulb } from "react-icons/fa6";
 import { TbTargetArrow } from "react-icons/tb";
+import { FadeInOnScroll } from "./FadeInOnScroll";
 
 const features = [
   {
@@ -99,27 +100,34 @@ function Feature({
 }
 
 function FeaturesDesktop() {
+  const INITIAL_DELAY_DESKTOP = 0.2;
+  const DELAY_INCREMENT_DESKTOP = 0.2;
   return (
     <div className="hidden lg:mt-20 lg:block">
       <>
         <div className="grid grid-cols-3 gap-x-8">
-          {features.map((feature) => (
-            <Feature
+          {features.map((feature, index) => (
+            <FadeInOnScroll
               key={feature.name}
-              feature={{
-                ...feature,
-                name: (
-                  <div className="">
-                    <span
-                      className="absolute inset-0"
-                      aria-label={feature.name}
-                    />
-                    {feature.name}
-                  </div>
-                ),
-              }}
-              className="relative"
-            />
+              delay={INITIAL_DELAY_DESKTOP + index * DELAY_INCREMENT_DESKTOP}
+            >
+              <Feature
+                key={feature.name}
+                feature={{
+                  ...feature,
+                  name: (
+                    <div className="">
+                      <span
+                        className="absolute inset-0"
+                        aria-label={feature.name}
+                      />
+                      {feature.name}
+                    </div>
+                  ),
+                }}
+                className="relative"
+              />
+            </FadeInOnScroll>
           ))}
         </div>
       </>
@@ -128,12 +136,19 @@ function FeaturesDesktop() {
 }
 
 function FeaturesMobile() {
+  const INITIAL_DELAY_MOBILE = 0.1;
+  const DELAY_INCREMENT_MOBILE = 0.15;
   return (
     <div className="-mx-4 mt-20 flex flex-col gap-y-10 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:hidden">
-      {features.map((feature) => (
-        <div key={feature.name}>
-          <Feature feature={feature} className="mx-auto max-w-2xl" />
-        </div>
+      {features.map((feature, index) => (
+        <FadeInOnScroll
+          key={feature.name}
+          delay={INITIAL_DELAY_MOBILE + index * DELAY_INCREMENT_MOBILE}
+        >
+          <div key={feature.name}>
+            <Feature feature={feature} className="mx-auto max-w-2xl" />
+          </div>
+        </FadeInOnScroll>
       ))}
     </div>
   );

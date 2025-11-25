@@ -1,8 +1,9 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, type JSX } from "react";
 import { AboutUs } from "./components/AboutUs";
 import BttButton from "./components/bttButton";
 import { CallToAction } from "./components/CallToAction";
 import { ContactUs } from "./components/Contact";
+import { FadeInOnScroll } from "./components/FadeInOnScroll";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { PrimaryFeatures } from "./components/PrimaryFeatures";
@@ -17,7 +18,16 @@ const Presence = lazy(() =>
   }))
 );
 
-function App() {
+function App(): JSX.Element {
+  const DELAY_INCREMENT = 0.15;
+  let currentDelay = 0;
+
+  const getNextDelay = () => {
+    // Incrementamos y luego retornamos el valor antes del incremento para evitar delay en el primer componente
+    const delay = currentDelay;
+    currentDelay += DELAY_INCREMENT;
+    return delay;
+  };
   return (
     <>
       <main>
@@ -26,14 +36,26 @@ function App() {
           <Hero />
         </section>
         <BttButton />
-        <AboutUs />
-        <Services />
-        <PrimaryFeatures />
-        <CallToAction />
+        <FadeInOnScroll delay={getNextDelay()}>
+          <AboutUs />
+        </FadeInOnScroll>
+        <FadeInOnScroll delay={getNextDelay()}>
+          <Services />
+        </FadeInOnScroll>
+        <FadeInOnScroll delay={getNextDelay()}>
+          <PrimaryFeatures />
+        </FadeInOnScroll>
+        <FadeInOnScroll delay={getNextDelay()}>
+          <CallToAction />
+        </FadeInOnScroll>
         <Suspense fallback={<div>Cargando mapa...</div>}>
-          <Presence />
+          <FadeInOnScroll delay={getNextDelay()}>
+            <Presence />
+          </FadeInOnScroll>
         </Suspense>
-        <ContactUs />
+        <FadeInOnScroll delay={getNextDelay()}>
+          <ContactUs />
+        </FadeInOnScroll>
       </main>
       <Footer />
     </>

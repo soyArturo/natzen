@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
-import { FaPhoneAlt } from "react-icons/fa";
 import { FaBuilding, FaEnvelope } from "react-icons/fa6";
 import Loading from "./Loading";
 
@@ -109,16 +108,6 @@ export function ContactUs() {
                     <br />
                     Tijuana, Baja California.
                   </dd>
-                </div>
-                <div className="flex gap-x-4">
-                  <dt className="flex-none">
-                    <span className="sr-only">Telephone</span>
-                    <FaPhoneAlt
-                      aria-hidden="true"
-                      className="h-7 w-6 text-white"
-                    />
-                  </dt>
-                  <dd>664.365.1959</dd>
                 </div>
                 <div className="flex gap-x-4">
                   <dt className="flex-none">

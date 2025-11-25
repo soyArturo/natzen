@@ -4,6 +4,7 @@ import clsx from "clsx";
 
 import { Container } from "@/components/Container";
 import { FaFileContract, FaSolarPanel } from "react-icons/fa6";
+import { FadeInOnScroll } from "./FadeInOnScroll";
 
 const features = [
   {
@@ -52,7 +53,7 @@ const features = [
       {
         id: 1,
         title:
-          "Con amplia experiencia que nos respalda. Más 12.8 MW instalados y mantenimientos a plantas mayores a 1 MW. Te apoyamos en el diseño, instalación, suministro, mantenimiento, análisis de estado de planta con viabilidad económica, técnica y legislativa.",
+          "Con amplia experiencia que nos respalda. Más 20 MW instalados. Te apoyamos en el diseño, instalación, suministro, mantenimiento, análisis de estado de planta con viabilidad económica, técnica y legislativa.",
       },
     ],
     icon: function ContactsIcon() {
@@ -120,7 +121,8 @@ function Feature({
             <li
               key={value.id}
               className={clsx(
-                "rounded-md text-center text-base text-black transition"
+                "rounded-md text-center text-base text-black transition",
+                "text-justify leading-relaxed px-2"
               )}
             >
               {value.title}
@@ -133,12 +135,19 @@ function Feature({
 }
 
 function FeaturesMobile() {
+  const INITIAL_DELAY_MOBILE = 0.1;
+  const DELAY_INCREMENT_MOBILE = 0.15;
   return (
     <div className="-mx-4 mt-20 flex flex-col gap-y-10 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:hidden">
-      {features.map((feature) => (
-        <div key={feature.name}>
-          <Feature feature={feature} className="mx-auto max-w-2xl" />
-        </div>
+      {features.map((feature, index) => (
+        <FadeInOnScroll
+          key={feature.name}
+          delay={INITIAL_DELAY_MOBILE + index * DELAY_INCREMENT_MOBILE}
+        >
+          <div key={feature.name}>
+            <Feature feature={feature} className="mx-auto max-w-2xl" />
+          </div>
+        </FadeInOnScroll>
       ))}
     </div>
   );
