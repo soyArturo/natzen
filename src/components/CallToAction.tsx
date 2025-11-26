@@ -13,7 +13,6 @@ import sedena from "@/assets/images/logos/sedena.png";
 import sempra from "@/assets/images/logos/sempra.svg";
 import teleflex from "@/assets/images/logos/teleflex.svg";
 import vesta from "@/assets/images/logos/vesta.png";
-import waldos from "@/assets/images/logos/waldos.webp";
 import { Container } from "@/components/Container";
 import AutoScroll from "embla-carousel-auto-scroll";
 import useEmblaCarousel from "embla-carousel-react";
@@ -28,7 +27,6 @@ const clients = [
   { name: "OXXO", logo: oxxo, type: "image" },
   { name: "Sempra", logo: sempra, type: "svg" },
   { name: "Hutchinson", logo: hutchinson, type: "svg" },
-  { name: "Waldos", logo: waldos, type: "image" },
   { name: "Lala", logo: lala, type: "png" },
   { name: "CFE", logo: cfe, type: "svg" },
   { name: "Home Depot", logo: homedepot, type: "image" },
