@@ -7,7 +7,7 @@ import { FaWhatsapp } from "react-icons/fa6";
 const BttButton = () => {
   const [showForm, setShowForm] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const whatsappNumber = "526641710528";
+  const whatsappNumber = "526647268277";
   const rsvpMessage = encodeURIComponent("¡Hola!\n Quiero pedir informes.");
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${rsvpMessage}`;
 
